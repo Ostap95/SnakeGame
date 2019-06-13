@@ -15,43 +15,31 @@ class Block {
   constructor(x, y, size, direction, velocity) {
     this.x = x;
     this.y = y;
-    this.velocity = velocity;
-    this.xVelocity = 0;
-    this.yVelocity = 0;
-    this.direction = direction;
     this.size = size;
+    this.direction = direction;
+    this.velocity = velocity;
   }
 
-  draw(newDirection) {
-    this.direction = newDirection;
-    this.updatePosition();
+  draw() {
+    this.moveBlock();
     square(this.x, this.y, this.size);
   }
 
-  updatePosition() {
+  moveBlock() {
     switch (this.direction) {
       case "north":
-        this.yVelocity -= this.velocity;
-        this.xVelocity = 0;
+        this.y -= this.velocity;
         break;
       case "south":
-        console.log("south");
-        this.yVelocity += this.velocity;
-        this.xVelocity = 0;
+        this.y += this.velocity;
         break;
       case "west":
-        this.xVelocity -= this.velocity;
-        this.yVelocity = 0;
+        this.x -= this.velocity;
         break;
       case "east":
-        this.xVelocity += this.velocity;
-        this.yVelocity = 0;
+        this.x += this.velocity;
         break;
     }
-    this.x += this.xVelocity;
-    this.y += this.yVelocity;
-    this.xVelocity = 0;
-    this.yVelocity = 0;
   }
 }
 
@@ -59,12 +47,20 @@ class Snake {
   constructor(direction, velocity) {
     this.blocks = [];
     this.direction = direction;
+    this.directionChangePoints = [];
+    this.velocity = velocity;
     this.blocks.push(new Block(0, 0, SIZE, direction, velocity));
   }
 
   draw() {
-    this.blocks.forEach(block => {
-      block.draw(this.direction);
+    this.blocks.forEach((block, index) => {
+      this.directionChangePoints.forEach(change => {
+        if (change.x === block.x && change.y === block.y) {
+          block.direction = change.direction;
+          if ((this.blocks.length - 1) === index) this.directionChangePoints.shift();
+        }
+      })
+      block.draw();
     });
   }
 
@@ -82,6 +78,18 @@ class Snake {
       return;
     
     this.direction = newDirection;
+    this.addChangePoint();
+  }
+
+  addChangePoint() {
+    let head = this.blocks[0];
+    this.directionChangePoints.push(
+      {
+        x: head.x,
+        y: head.y,
+        direction: this.direction
+      }
+    )
   }
 }
 
