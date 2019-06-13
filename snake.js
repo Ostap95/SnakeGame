@@ -15,56 +15,84 @@ class Block {
   constructor(x, y, size, direction, velocity) {
     this.x = x;
     this.y = y;
-    this.velocity = velocity;
-    this.xVelocity = 0;
-    this.yVelocity = 0;
-    this.direction = direction;
     this.size = size;
+    this.direction = direction;
+    this.velocity = velocity;
   }
 
-  draw(newDirection) {
-    this.direction = newDirection;
-    this.updatePosition();
+  draw() {
+    this.moveBlock();
     square(this.x, this.y, this.size);
   }
 
-  updatePosition() {
+  moveBlock() {
     switch (this.direction) {
       case "north":
-        this.yVelocity -= this.velocity;
-        this.xVelocity = 0;
+        this.y -= this.velocity;
         break;
       case "south":
-        console.log("south");
-        this.yVelocity += this.velocity;
-        this.xVelocity = 0;
+        this.y += this.velocity;
         break;
       case "west":
-        this.xVelocity -= this.velocity;
-        this.yVelocity = 0;
+        this.x -= this.velocity;
         break;
       case "east":
-        this.xVelocity += this.velocity;
-        this.yVelocity = 0;
+        this.x += this.velocity;
         break;
     }
-    this.x += this.xVelocity;
-    this.y += this.yVelocity;
-    this.xVelocity = 0;
-    this.yVelocity = 0;
+  }
+}
+
+class Food {
+  constructor(size, windowWidth, windowHeight) {
+    this.x = 0;
+    this.y = 0;
+    this.size = size;
+    this.windowWidth = windowWidth;
+    this.windowHeight = windowHeight;
+    this.spawn();
+  }
+
+  spawn() {
+    let new_x = Math.floor(Math.random() * this.windowWidth);
+    let new_y = Math.floor(Math.random() * this.windowHeight); 
+    this.x = Math.floor(new_x/this.size) * this.size;
+    this.y = Math.floor(new_y/this.size) * this.size;
+  }
+
+  draw() {
+    fill(0);
+    square(this.x, this.y, this.size);
   }
 }
 
 class Snake {
-  constructor(direction, velocity) {
+  constructor(direction, velocity, blockSize) {
     this.blocks = [];
     this.direction = direction;
-    this.blocks.push(new Block(0, 0, SIZE, direction, velocity));
+    this.directionChangePoints = [];
+    this.velocity = velocity;
+    this.blockSize = blockSize;
+    this.blocks.push(new Block(0, 0, this.blockSize, direction, velocity));
+    this.blocks.push(new Block(-blockSize, 0, this.blockSize, direction, velocity));
   }
 
   draw() {
-    this.blocks.forEach(block => {
-      block.draw(this.direction);
+    noStroke();
+    fill(255);
+    this.blocks.forEach((block, index) => {
+      this.directionChangePoints.forEach(change => {
+        if (change.x === block.x && change.y === block.y) {
+          block.direction = change.direction;
+          if ((this.blocks.length - 1) === index) this.directionChangePoints.shift();
+        }
+      })
+      if (block.x === food.x && block.y === food.y) {
+        food.spawn();
+        let lastBlock = this.blocks[this.blocks.length - 1];
+        this.blocks.push(new Block(lastBlock.x, lastBlock.y, this.blockSize, lastBlock.direction, this.velocity));
+      }
+      block.draw();
     });
   }
 
@@ -82,12 +110,25 @@ class Snake {
       return;
     
     this.direction = newDirection;
+    this.addChangePoint();
+  }
+
+  addChangePoint() {
+    let head = this.blocks[0];
+    this.directionChangePoints.push(
+      {
+        x: head.x,
+        y: head.y,
+        direction: this.direction
+      }
+    )
   }
 }
 
 let startTime = 0;
 let keyPressStartTime = 0;
-let snake = new Snake(directions.EAST, VELOCITY);
+let snake = new Snake(directions.EAST, VELOCITY, SIZE);
+let food = new Food(SIZE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 function setup() {
   let canvas = createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -100,6 +141,7 @@ function draw() {
   if (millis() - startTime >= 100) {
     background(255, 204, 0);
     snake.draw();
+    food.draw();
     startTime = millis();
   }
 }
