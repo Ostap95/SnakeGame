@@ -4,6 +4,21 @@
   align-items: center;
 }
 
-.game-title {
-  font-size: 2.0em;
+#game-title {
+  position: absolute;
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+}
+
+#game-title label:nth-child(1) {
+  font-size: 3em;
+}
+
+#game-title label:nth-child(2) {
+  font-size: 1.2em;
+}
+
+.subtitle {
+  display: flex;
+  justify-content: center;
 }

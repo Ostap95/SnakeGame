@@ -64,4 +64,8 @@ class Snake {
       direction: this.direction
     });
   }
+
+  getHead() {
+    return this.blocks[0];
+  }
 }
