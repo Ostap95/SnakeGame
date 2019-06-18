@@ -4,10 +4,10 @@ const VELOCITY = SIZE;
 const WINDOW_WIDTH = 640;
 const WINDOW_HEIGHT = 480;
 const gameStates = {
-  INITIAL: 'initial',
-  RUNNING: 'running',
-  PAUSED: 'running',
-  END: 'end'
+  INITIAL: "initial",
+  RUNNING: "running",
+  PAUSED: "running",
+  END: "end"
 };
 const directions = {
   NORTH: "north",
@@ -26,7 +26,9 @@ var gameState;
 function setup() {
   let canvas = createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);
   canvas.parent("canvas-container");
-  gameTitle = select('#game-title');
+  gameTitle = select("#game-title");
+  gameOverTitle = select("#game-over-title");
+  gameOverTitle.style("display", "none");
   background(255, 204, 0);
   gameState = gameStates.INITIAL;
   startTime = millis();
@@ -39,6 +41,7 @@ function draw() {
     if (millis() - startTime >= 100) {
       background(255, 204, 0);
       let head = snake.getHead();
+      food.draw();
       if (
         head.x + head.size <= WINDOW_WIDTH &&
         head.x >= 0 &&
@@ -47,9 +50,10 @@ function draw() {
       ) {
         snake.draw();
       } else {
-        snake = new Snake(directions.EAST, VELOCITY, SIZE);
+        background(255, 204, 0);
+        gameState = gameStates.END;
+        gameOverTitle.style("display", "inline");
       }
-      food.draw();
       startTime = millis();
     }
   }
@@ -70,9 +74,16 @@ function keyPressed() {
       snake.changeDirection(directions.SOUTH);
       break;
     case 32: // space
-      if (gameState === gameStates.INITIAL) {
-        gameTitle.style('display', 'none');
-        gameState = gameStates.RUNNING;
+      switch (gameState) {
+        case gameStates.INITIAL:
+          gameTitle.style("display", "none");
+          gameState = gameStates.RUNNING;
+          break;
+        case gameStates.END:
+          gameState = gameStates.RUNNING;
+          snake = new Snake(directions.EAST, VELOCITY, SIZE);
+          gameOverTitle.style('display', 'none');
+          break;
       }
       break;
   }
