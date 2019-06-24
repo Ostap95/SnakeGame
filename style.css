@@ -1,12 +1,15 @@
+body {
+  font-family: 'Press Start 2P', cursive;
+}
+
 #canvas-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#game-title {
+#game-title, #game-over-title {
   position: absolute;
-  font-family: 'Press Start 2P', cursive;
   color: white;
 }
 
@@ -14,11 +17,41 @@
   font-size: 3em;
 }
 
+#game-over-title label:nth-child(1) {
+  font-size: 3em;
+}
+
 #game-title label:nth-child(2) {
+  font-size: 1.2em;
+}
+
+#game-over-title label:nth-child(2) {
+  font-size: 1.2em;
+}
+
+#game-over-title label:nth-child(3) {
   font-size: 1.2em;
 }
 
 .subtitle {
   display: flex;
   justify-content: center;
+  margin-bottom: 0px;
+}
+
+.score-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0px;
+}
+
+.score-area {
+  background-color: black;
+  width: 640px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.score-label {
+  color: white;
 }

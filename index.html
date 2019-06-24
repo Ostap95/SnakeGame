@@ -11,10 +11,21 @@
     <link rel="stylesheet" type="text/css" href="./style.css" media="screen">
   </head>
   <body>
-    <div id="canvas-container" class="py-5">
+    <div class="score-container pt-3">
+      <div class="score-area">
+        <div class="mr-2 mt-2">
+          <label class="score-label">Score: </label><span id="score" class="score-label">0</span>
+        </div>
+      </div>
+    </div>
+    <div id="canvas-container">
       <div id="game-title" class="text-center">
         <label>Snake Game</label>
         <label class="subtitle">Press space to start</label>
+      </div>
+      <div id="game-over-title" class="text-center">
+        <label>Game Over</label>
+        <label class="subtitle">Press space to start over</label>
       </div>
     </div>
   </body>
