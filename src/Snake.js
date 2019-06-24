@@ -5,6 +5,7 @@ class Snake {
     this.directionChangePoints = [];
     this.velocity = velocity;
     this.blockSize = blockSize;
+    this.score = 0;
     this.blocks.push(new Block(0, 0, this.blockSize, direction, velocity));
     this.blocks.push(
       new Block(-blockSize, 0, this.blockSize, direction, velocity)
@@ -23,6 +24,7 @@ class Snake {
         }
       });
       if (block.x === food.x && block.y === food.y) {
+        this.score += 1;
         food.spawn();
         let lastBlock = this.blocks[this.blocks.length - 1];
         this.blocks.push(
@@ -67,5 +69,9 @@ class Snake {
 
   getHead() {
     return this.blocks[0];
+  }
+
+  getScore() {
+    return this.score;
   }
 }

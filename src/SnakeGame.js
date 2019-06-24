@@ -22,6 +22,7 @@ var snake;
 var food;
 var gameTitle;
 var gameState;
+var scoreText;
 
 function setup() {
   let canvas = createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -29,6 +30,7 @@ function setup() {
   gameTitle = select("#game-title");
   gameOverTitle = select("#game-over-title");
   gameOverTitle.style("display", "none");
+  scoreText = select("#score");
   background(255, 204, 0);
   gameState = gameStates.INITIAL;
   startTime = millis();
@@ -37,6 +39,7 @@ function setup() {
 }
 
 function draw() {
+  scoreText.html(snake.getScore());
   if (gameState === gameStates.RUNNING) {
     if (millis() - startTime >= 100) {
       background(255, 204, 0);
