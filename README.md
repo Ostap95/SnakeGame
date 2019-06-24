@@ -12,6 +12,7 @@ Preview
 <p align="center">
   <img src="https://github.com/Ostap95/SnakeGame/blob/master/assets/game_over.png" width="350"/>
 </p>
+
 How to Play
 -----------
 Just open the index.html file in your browser.
