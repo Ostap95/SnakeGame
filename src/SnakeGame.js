@@ -43,23 +43,21 @@ function draw() {
   if (gameState === gameStates.RUNNING) {
     if (millis() - startTime >= 100) {
       background(255, 204, 0);
-      let head = snake.getHead();
       food.draw();
-      if (
-        head.x + head.size <= WINDOW_WIDTH &&
-        head.x >= 0 &&
-        head.y + head.size <= WINDOW_HEIGHT &&
-        head.y >= 0
-      ) {
-        snake.draw();
+      if (snake.checkForWallCollision(WINDOW_WIDTH, WINDOW_HEIGHT) || snake.checkForSelfCollision()) {
+        gameOver();
       } else {
-        background(255, 204, 0);
-        gameState = gameStates.END;
-        gameOverTitle.style("display", "inline");
+        snake.draw();
       }
       startTime = millis();
     }
   }
+}
+
+function gameOver() {
+  background(255, 204, 0);
+  gameState = gameStates.END;
+  gameOverTitle.style("display", "inline");
 }
 
 function keyPressed() {

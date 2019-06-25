@@ -28,4 +28,10 @@ class Block {
         break;
     }
   }
+
+  inCollision(block) {
+    if (this.x > (block.x + block.size) || (this.x + this.size) > block.x) return false;
+    if (this.y < (block.y - block.size) || (this.y + this.size) < block.y) return false;
+    return true;
+  }
 }

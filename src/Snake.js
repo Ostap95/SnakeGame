@@ -74,4 +74,22 @@ class Snake {
   getScore() {
     return this.score;
   }
+
+  checkForSelfCollision() {
+    let head = this.getHead();
+    this.blocks.forEach(function (block, index) {
+      if (index > 2 && head.inCollision(block)) return true;
+    });
+    return false;
+  }
+
+  checkForWallCollision(window_width, window_height) {
+    let head = this.getHead();
+    return !(
+      head.x + head.size <= window_width &&
+      head.x >= 0 &&
+      head.y + head.size <= window_height &&
+      head.y >= 0
+    )
+  }
 }
