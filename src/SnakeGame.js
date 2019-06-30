@@ -44,6 +44,7 @@ function draw() {
     if (millis() - startTime >= 100) {
       background(255, 204, 0);
       food.draw();
+      console.log(snake.checkForSelfCollision())
       if (snake.checkForWallCollision(WINDOW_WIDTH, WINDOW_HEIGHT) || snake.checkForSelfCollision()) {
         gameOver();
       } else {

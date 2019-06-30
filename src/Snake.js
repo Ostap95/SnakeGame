@@ -77,9 +77,11 @@ class Snake {
 
   checkForSelfCollision() {
     let head = this.getHead();
-    this.blocks.forEach(function (block, index) {
-      if (index > 2 && head.inCollision(block)) return true;
-    });
+
+    let i;
+    for (i = 1; i < this.blocks.length; i++) {
+      if (head.inCollision(this.blocks[i])) return true;
+    }
     return false;
   }
 
