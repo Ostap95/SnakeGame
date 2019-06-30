@@ -17,7 +17,7 @@ To do
 ------
 - ~~Wall collision detection~~
 - ~~Score~~
-- Detect when the snake eats itself
+- ~~Detect when the snake eats itself~~
 
 Libraries
 ---------
