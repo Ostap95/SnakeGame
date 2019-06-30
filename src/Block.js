@@ -28,4 +28,8 @@ class Block {
         break;
     }
   }
+
+  inCollision(block) {
+    return ((this.x < (block.x + block.size)) && ((this.x + this.size) > block.x) && (this.y < (block.y + block.size)) && ((this.y + this.size) > block.y))
+  }
 }
